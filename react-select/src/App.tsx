@@ -10,7 +10,7 @@ const App = () => {
     "option 2",
     "option 3",
   ];
-  const [selected, setSelected] = useState(["option 2", "option 3"]);
+  const [selected, setSelected] = useState(["test1", "option 2", "option 3"]);
 
   return (
     <div className="App">

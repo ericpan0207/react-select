@@ -48,6 +48,9 @@ const ReactSelect: React.FC<Prop> = ({
 
   const getOptions = () => {
     return optionsProp.filter((_, index) => {
+      if (!multiselect) {
+        return index > 1;
+      }
       if (selectAll) {
         return index !== 0;
       } else {
