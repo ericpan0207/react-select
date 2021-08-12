@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import "./ReactSelect.scss";
 
 /**
- * optionsProp: A list of options that appear in the dropdown
- * selectedProp: A list of selected options
+ * optionsProp: An object containing unique key and option values that appear in the dropdown
+ * selectedProp: A set of selected options; uses the key of optionsProp
  * multiselect: true to allow for multiple selections, false for single selection
  * setSelected: updates the selected options
  */
 interface Prop {
-  optionsProp: string[];
-  selectedProp: string[];
+  optionsProp: { [key: string]: string };
+  selectedProp: Set<string>;
   multiselect: boolean;
-  setSelected: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelected: React.Dispatch<React.SetStateAction<Set<string>>>;
 }
 
 const ReactSelect: React.FC<Prop> = ({
@@ -23,40 +23,53 @@ const ReactSelect: React.FC<Prop> = ({
   const [selectAll, setSelectAll] = useState(false);
 
   const handleSelection = (option: string) => {
-    const optionIndex = selectedProp.indexOf(option);
-    let updatedSelect = [...selectedProp];
-    if (option === "Select All") {
-      updatedSelect = optionsProp.slice(2);
-      setSelectAll(true);
-    } else if (option === "Deselect All") {
-      updatedSelect = [];
-      setSelectAll(false);
-    } else if (optionIndex > -1) {
-      updatedSelect.splice(optionIndex, 1);
-    } else if (!multiselect) {
-      updatedSelect = [option];
-    } else {
-      updatedSelect.push(option);
-    }
+    // const optionIndex = selectedProp.indexOf(option);
+    // let updatedSelect = new Set(Ar);
 
-    setSelected(updatedSelect);
+    console.log(option);
+
+    if (option === "option_1") {
+      // Select All case
+      setSelected(new Set(Object.keys(optionsProp).slice(2)));
+      setSelectAll(true);
+    } else if (option === "option_2") {
+      // Deselect All case
+      setSelected(new Set());
+      setSelectAll(false);
+    } else if (selectedProp.has(option)) {
+      // Remove if option previously selected
+      const updatedSelect = Array.from(selectedProp).filter(
+        (key) => key !== option
+      );
+      setSelected(new Set(updatedSelect));
+    } else if (!multiselect) {
+      // single select update
+      setSelected(new Set([option]));
+    } else {
+      // multi select update
+      setSelected((selectedProp) => new Set(selectedProp.add(option)));
+    }
   };
 
   const isChecked = (option: string) => {
-    return selectedProp.indexOf(option) > -1;
+    return selectedProp.has(option);
   };
 
+  // Filters the options to display select all, deselect all or neither
   const getOptions = () => {
-    return optionsProp.filter((_, index) => {
+    const optionsArray = Object.entries(optionsProp);
+    const filteredOptionsArray = optionsArray.filter(([key, _]) => {
+      const index = parseInt(key.split("option_")[1]);
       if (!multiselect) {
-        return index > 1;
+        return index > 2;
       }
       if (selectAll) {
-        return index !== 0;
-      } else {
         return index !== 1;
+      } else {
+        return index !== 2;
       }
     });
+    return Object.fromEntries(filteredOptionsArray);
   };
   return (
     <>
@@ -65,10 +78,10 @@ const ReactSelect: React.FC<Prop> = ({
           <label htmlFor="dropdown_checkbox" className="select_label"></label>
 
           <label htmlFor="select" className="selected_options">
-            {selectedProp.length === 0 ? "Technology" : ""}
-            {selectedProp.map((option) => (
+            {selectedProp.size === 0 ? "Technology" : ""}
+            {Array.from(selectedProp).map((option) => (
               <button onClick={() => handleSelection(option)} key={option}>
-                {option}
+                {optionsProp[option]}
               </button>
             ))}
           </label>
@@ -77,19 +90,22 @@ const ReactSelect: React.FC<Prop> = ({
             id="dropdown_checkbox"
             className="select_dropdown"
             type="checkbox"
+            readOnly
           />
 
           <div className="options_container">
-            {getOptions().map((option) => (
-              <div
-                className="option_item"
-                key={option}
-                onClick={() => handleSelection(option)}
-              >
-                <input type="checkbox" checked={isChecked(option)} />
-                <label>{option}</label>
-              </div>
-            ))}
+            {Object.entries(getOptions()).map(([index, value]) => {
+              return (
+                <div
+                  className="option_item"
+                  key={index}
+                  onClick={() => handleSelection(index)}
+                >
+                  <input type="checkbox" checked={isChecked(index)} readOnly />
+                  <label>{value}</label>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
