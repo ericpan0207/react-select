@@ -13,6 +13,12 @@ const App = () => {
     ["option_" + ++index]: "option 3",
     ["option_" + ++index]: "option 3",
   };
+
+  for (let i = index; i < 100; i++) {
+    console.log(options);
+    options["option_" + i] = "option " + i;
+  }
+
   const [selected, setSelected] = useState(
     new Set(["option_3", "option_4", "option_5"])
   );
@@ -23,7 +29,7 @@ const App = () => {
         <ReactSelect
           optionsProp={options}
           selectedProp={selected}
-          multiselect={false}
+          multiselect={true}
           setSelected={setSelected}
         />
       </>
