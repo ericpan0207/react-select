@@ -23,10 +23,6 @@ const ReactSelect: React.FC<Prop> = ({
   const [selectAll, setSelectAll] = useState(false);
 
   const handleSelection = (option: string) => {
-    // const optionIndex = selectedProp.indexOf(option);
-    // let updatedSelect = new Set(Ar);
-
-    console.log(option);
 
     if (option === "option_1") {
       // Select All case
@@ -78,7 +74,7 @@ const ReactSelect: React.FC<Prop> = ({
           <label htmlFor="dropdown_checkbox" className="select_label"></label>
 
           <label htmlFor="select" className="selected_options">
-            {selectedProp.size === 0 ? "Technology" : ""}
+            {selectedProp.size === 0 ? "Select..." : ""}
             {Array.from(selectedProp).map((option) => (
               <button onClick={() => handleSelection(option)} key={option}>
                 {optionsProp[option]}
