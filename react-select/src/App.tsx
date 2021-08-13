@@ -15,7 +15,6 @@ const App = () => {
   };
 
   for (let i = index; i < 100; i++) {
-    console.log(options);
     options["option_" + i] = "option " + i;
   }
 
