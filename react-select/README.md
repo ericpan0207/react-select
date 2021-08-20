@@ -6,8 +6,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 1) Clone the repository 
 2) `cd react-select` to get into the repository folder
-3) run `git switch master` to get to the right branch that I pushed the code to
-4) If step 3 doesn't work, try `git checkout master` and then `git pull origin master`
+3) run `git switch v2` to get to the right branch that I pushed the code to
+4) If step 3 doesn't work, try `git checkout v2` and then `git pull origin v2`
 4) `cd react-select` to get into the project folder
 5) Run `npm install` to install dependencies
 6) After all the dependencies are installed, run `npm start`
