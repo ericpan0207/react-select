@@ -6,12 +6,14 @@ import "./ReactSelect.scss";
  * selectedProp: A set of selected options; uses the key of optionsProp
  * multiselect: true to allow for multiple selections, false for single selection
  * setSelected: updates the selected options
+ * componentId: unique id for this instance
  */
 interface Prop {
   optionsProp: { [key: string]: string };
   selectedProp: Set<string>;
   multiselect: boolean;
   setSelected: React.Dispatch<React.SetStateAction<Set<string>>>;
+  componentId: number;
 }
 
 const ReactSelect: React.FC<Prop> = ({
@@ -19,11 +21,11 @@ const ReactSelect: React.FC<Prop> = ({
   selectedProp,
   multiselect,
   setSelected,
+  componentId,
 }: Prop) => {
   const [selectAll, setSelectAll] = useState(false);
 
   const handleSelection = (option: string) => {
-
     if (option === "option_1") {
       // Select All case
       setSelected(new Set(Object.keys(optionsProp).slice(2)));
@@ -69,41 +71,41 @@ const ReactSelect: React.FC<Prop> = ({
   };
   return (
     <>
-      <div className="select_container">
-        <div className="select_block">
-          <label htmlFor="dropdown_checkbox" className="select_label"></label>
+      <div className="select_block">
+        <label
+          htmlFor={`dropdown_checkbox-${componentId}`}
+          className="select_label"
+        ></label>
 
-          <label htmlFor="select" className="selected_options">
-            {selectedProp.size === 0 ? "Select..." : ""}
-            {Array.from(selectedProp).map((option) => (
-              <button onClick={() => handleSelection(option)} key={option}>
-                {optionsProp[option]}
-              </button>
-            ))}
-          </label>
+        <label htmlFor="select" className="selected_options">
+          {selectedProp.size === 0 ? "Select..." : ""}
+          {Array.from(selectedProp).map((option) => (
+            <button onClick={() => handleSelection(option)} key={option}>
+              {optionsProp[option]}
+            </button>
+          ))}
+        </label>
+      </div>
 
-          <input
-            id="dropdown_checkbox"
-            className="select_dropdown"
-            type="checkbox"
-            readOnly
-          />
-
-          <div className="options_container">
-            {Object.entries(getOptions()).map(([index, value]) => {
-              return (
-                <div
-                  className="option_item"
-                  key={index}
-                  onClick={() => handleSelection(index)}
-                >
-                  <input type="checkbox" checked={isChecked(index)} readOnly />
-                  <label>{value}</label>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+      <input
+        id={`dropdown_checkbox-${componentId}`}
+        className="select_dropdown"
+        type="checkbox"
+        readOnly
+      />
+      <div className="options_container">
+        {Object.entries(getOptions()).map(([index, value]) => {
+          return (
+            <div
+              className="option_item"
+              key={index}
+              onClick={() => handleSelection(index)}
+            >
+              <input type="checkbox" checked={isChecked(index)} readOnly />
+              <label>{value}</label>
+            </div>
+          );
+        })}
       </div>
     </>
   );

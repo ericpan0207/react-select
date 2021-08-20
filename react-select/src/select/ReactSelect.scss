@@ -1,12 +1,5 @@
-// Centers the whole Select component and gives some spacing on the sides
-.select_container {
-  margin: auto;
-  width: 80%;
-}
-
 .select_block {
   position: relative;
-  width: 100%;
 }
 
 .select_label {
@@ -14,24 +7,25 @@
   top: 1px;
   left: 2px;
   width: 100%;
-  height: 44px;
-  cursor: pointer;
+  height: 100%;
   z-index: 2;
+
+  cursor: pointer;
 }
 
 .selected_options {
-  position: relative;
-  width: 100%;
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
 
-  min-height: 46px;
+  width: 100%;
+  padding: 12px 40px 10px 16px;
+
   border: 1px solid #cdd6f3;
   box-sizing: border-box;
   border-radius: 8px;
-  padding: 12px 40px 10px 16px;
 
+  // Description text
   font-size: 14px;
   color: #a8acc9;
 
@@ -58,23 +52,23 @@
   }
 }
 
-button {
-  cursor: pointer;
-  outline: none;
-  box-sizing: border-box;
-  border: none;
-  z-index: 3;
-
-  word-break: break-all;
-}
-
 .selected_options button {
   position: relative;
   padding: 7px 34px 7px 8px;
+
+  outline: none;
+  box-sizing: border-box;
+  border: none;
+
   background: #ebe4fb;
   border-radius: 4px;
   margin-right: 9px;
   margin-bottom: 10px;
+
+  cursor: pointer;
+  word-break: break-all;
+
+  z-index: 3;
 
   &:hover,
   &:focus {
@@ -104,10 +98,8 @@ input.select_dropdown {
 }
 
 .options_container {
-  position: absolute;
-  top: calc(100% - 2px);
-  left: 0;
-  width: 100%;
+  position: relative;
+
   max-height: 250px;
   overflow-y: auto;
 
@@ -119,10 +111,11 @@ input.select_dropdown {
 }
 
 .option_item {
+  padding: 5px;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 5px;
 
   &:hover,
   &:focus {
@@ -145,12 +138,6 @@ label {
   display: none;
 }
 
-.select_dropdown:checked ~ .options_container {
+.select_dropdown:checked + .options_container {
   display: block;
-}
-
-@media (min-width: 1366px) {
-  .select_container {
-    width: 60%;
-  }
 }
